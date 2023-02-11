@@ -1,15 +1,19 @@
-from flask import Flask
-from flask import request, redirect
+from flask import Flask, jsonify
+from flask import request
 from app.utils import get_homelab_ip
 import requests
 
 app = Flask(__name__)
 
 
-@app.route("/proxy")
-def hello_world():
-    target = request.args.get('endpoint')
+@app.route("/")
+def home():
+    return jsonify({"homelab-proxy": "python client"}), 200
+
+
+@app.route("/get")
+def proxy_get():
+    target = request.args.get('target')
     url = f"https://{get_homelab_ip()}/{target}"
     rsp = requests.get(url, verify=False)
-    # redirect(f"https://{get_homelab_ip()}/{target}")
     return rsp.json(), 200
