@@ -17,3 +17,10 @@ def proxy_get():
     url = f"https://{get_homelab_ip()}/{target}"
     rsp = requests.get(url, verify=False)
     return rsp.json(), 200
+
+
+@app.route("/other-get")
+def other_get():
+    target = request.args.get('t')
+    rsp = requests.get(target, verify=False)
+    return rsp.content, 200
